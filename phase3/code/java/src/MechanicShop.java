@@ -567,7 +567,7 @@ public class MechanicShop{
 	
 	public static void InsertServiceRequest(MechanicShop esql){//4
        		try{
-        		String todaysdate = "MM/dd/yyyy";
+        		String todaysdate = "2020-04-04";
 			String cust_ID="";
 			String car_ID="";
 			System.out.print("Enter the last name of the customer: ");
@@ -575,22 +575,24 @@ public class MechanicShop{
 			String query = "SELECT * FROM Customer WHERE lname='";
 			query += lastName + "';";
 
+			esql.executeQueryAndPrintResult(query);
+
 			int customerExists = esql.executeQuery(query); 
 			if (customerExists != 0){ 
 				do{
-					System.out.println("Do you want to add a new customer? (y/n)\n");
+					System.out.println("Do you want to add a new customer? (y/n)");
 					String user_input = in.readLine();
-					if(user_input == 'y' || user_input == 'Y') {
+					if(user_input.equals( "y") || user_input.equals("Y")) {
 						AddCustomer(esql);
 						break;
 					}
-					else if (user_input == 'n' || user_input == 'N') {
+					else if (user_input.equals("n") || user_input.equals("N")) {
 						System.out.println("Enter the customer ID: ");
 						cust_ID = in.readLine();
 						break;
 					}
 					else {
-						System.out.println("Invalid input");
+						System.out.println(“Invalid input”);
 					}
 				} while (true);
 			}
@@ -602,8 +604,10 @@ public class MechanicShop{
 			}	
 			
 			
-			query = "SELECT car_vin FROM Owns WHERE customer_id='";
+			query = "SELECT * FROM Owns WHERE customer_id='";
 			query += cust_ID + "';";
+
+			esql.executeQueryAndPrintResult(query);
 				
 			int carExists = esql.executeQuery(query); 
 				
@@ -628,7 +632,7 @@ public class MechanicShop{
 				System.out.println("Enter the Service Request ID: ");
 				int rid = Integer.parseInt(in.readLine());
 				query += rid + "', '";
-				query += cust_ID + "', '" + car_ID + "', " + todaysdate + ", '";
+				query += cust_ID + "', '" + car_ID + "',’ " + todaysdate + " ’, '";
 				System.out.println("Enter the odometer reading: ");
 				String odometer = in.readLine();
 				query += odometer + "', '";
@@ -642,6 +646,7 @@ public class MechanicShop{
 				System.out.println("New service request created.");
 				query = "SELECT * FROM Service_Request WHERE rid='";
 				query+= rid + "';";
+				esql.executeQueryAndPrintResult(query);
 				System.out.println("------------------------------------------------");
 	
 			}
@@ -651,9 +656,6 @@ public class MechanicShop{
 		} catch(Exception e){
 				System.err.println(e.getMessage());
 		}
-	}
-	
-
 	}
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
