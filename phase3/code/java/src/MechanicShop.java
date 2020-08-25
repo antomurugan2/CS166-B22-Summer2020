@@ -577,8 +577,22 @@ public class MechanicShop{
 
 			int customerExists = esql.executeQuery(query); 
 			if (customerExists != 0){ 
-				System.out.println("Enter the customer ID: ");
-				cust_ID = in.readLine();
+				do{
+					System.out.println(“Do you want to add a new customer? (y/n)”);
+					String user_input = in.readLine();
+					if(user_input == ‘y’ || user_input == ‘Y’) {
+						AddCustomer(esql);
+						break;
+					}
+					else if (user_input == ‘n’ || user_input == ‘N’) {
+						System.out.println("Enter the customer ID: ");
+						cust_ID = in.readLine();
+						break;
+					}
+					else {
+						System.out.println(“Invalid input”);
+					}
+				} while (true);
 			}
 			else{ 
 				System.out.println("There are no customers with that last name. Please add a new customer.");
@@ -637,6 +651,9 @@ public class MechanicShop{
 		} catch(Exception e){
 				System.err.println(e.getMessage());
 		}
+	}
+	
+
 	}
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
@@ -748,7 +765,7 @@ public class MechanicShop{
 	public static void ListCustomersInDescendingOrderOfTheirTotalBill(MechanicShop esql){//9
 		//
 		try{
-			String query = "SELECT a.fname, a.lname, total FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS TotalBill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.TotalBill DESC;";
+			String query = "SELECT a.fname, a.lname, TotalBill FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS TotalBill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.TotalBill DESC;";
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
 		}
