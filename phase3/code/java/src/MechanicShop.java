@@ -578,19 +578,19 @@ public class MechanicShop{
 			int customerExists = esql.executeQuery(query); 
 			if (customerExists != 0){ 
 				do{
-					System.out.println(“Do you want to add a new customer? (y/n)”);
+					System.out.println("Do you want to add a new customer? (y/n)\n");
 					String user_input = in.readLine();
-					if(user_input == ‘y’ || user_input == ‘Y’) {
+					if(user_input == 'y' || user_input == 'Y') {
 						AddCustomer(esql);
 						break;
 					}
-					else if (user_input == ‘n’ || user_input == ‘N’) {
+					else if (user_input == 'n' || user_input == 'N') {
 						System.out.println("Enter the customer ID: ");
 						cust_ID = in.readLine();
 						break;
 					}
 					else {
-						System.out.println(“Invalid input”);
+						System.out.println("Invalid input");
 					}
 				} while (true);
 			}
