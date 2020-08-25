@@ -560,10 +560,7 @@ public class MechanicShop{
 	
 	public static void InsertServiceRequest(MechanicShop esql){//4
        		try{
-			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-      			Calendar cal = Calendar.getInstance();
-    		        Date date = cal.getTime();
-        		String todaysdate = dateFormat.format(date);
+        		String todaysdate = "MM/dd/yyyy";
 			String cust_ID="";
 			String car_ID="";
 			System.out.print("Enter the last name of the customer: ");
@@ -601,8 +598,8 @@ public class MechanicShop{
 			}	
 			
 			query = "SELECT * FROM Owns WHERE car_vin='";
-			query += carID + "' AND customer_id='";
-			query += customerID + "';";
+			query += car_ID + "' AND customer_id='";
+			query += cust_ID + "';";
 				
 			int owns = esql.executeQuery(query);
 			if (owns != 0){
@@ -661,8 +658,6 @@ public class MechanicShop{
                 } catch(Exception e) {
                         System.err.println(e.getMessage());
                 }
-
-        }
 	
 	}
 	
