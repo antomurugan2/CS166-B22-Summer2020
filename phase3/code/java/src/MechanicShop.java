@@ -633,6 +633,59 @@ public class MechanicShop{
 	}
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
+		try{
+		String wid,rid, mid, comments, closingdate;
+		int bill;
+		do {
+                System.out.print("Enter the service request ID: ");
+                try {
+                        rid = in.readLine();
+                        if(rid.length() <= 0 ) {
+                                throw new RuntimeException("Service request ID cannot be null");
+                        }break;
+
+                }catch (Exception e) {
+                        System.out.println (e);
+                        continue;
+                }
+		}while (true);
+		
+		do {
+                System.out.print("Enter the Employee's ID: ");
+                try {
+                        mid = in.readLine();
+                        if(mid.length() <= 0) throw new RuntimeException("Employee ID cannot be null");
+                        break;
+                }catch (Exception e) {
+                        System.out.println(e);
+                        continue;
+                }
+        	}while (true);
+		
+		String query = "SELECT * FROM Service_Request a, Mechanic b WHERE a.rid = " + rid + " AND b.id = " + mid +";  ";
+		int reqandempEX = esql.executeQuery(query);
+		if (reqandempEX !=0){
+				System.out.println("Enter the Close request ID: ");
+				wid = in.readLine();
+				System.out.println("Any comments?");
+				comments = in.readLine();
+				System.out.println("What's the total amount due? ");
+				bill = Integer.parseInt(in.readLine());
+			query = "INSERT INTO Closed_Request(wid, rid, mid, date, comment, bill) VALUES (" + wid + ", " + rid + "," + mid + ", '" + closingdate + "' , '" + comments +"', " + bill + ");" ;
+			esql.executeUpdate(query);
+		
+				System.out.println("------------------------------------------------");
+				System.out.println("Service request closed.");
+				query = "SELECT * FROM Closed_Request WHERE rid='";
+				query+= rid + "';";
+				System.out.println("------------------------------------------------");
+		}
+			else { 
+				System.out.println("The service request ID and employee ID do not exist.");
+			}	catch(Exception e){
+				System.err.println(e.getMessage());
+		}
+		      
 		
 	}
 	
