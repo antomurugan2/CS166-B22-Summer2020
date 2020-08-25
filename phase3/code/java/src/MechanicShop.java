@@ -388,6 +388,11 @@ public class MechanicShop{
                 String query = "INSERT INTO Customer (id, fname, lname, phone, address) VALUES (" + ID + ", \'" + first_name + "\', \'" + last_name + "\',  \'" + phone_num  + "\',  \'" + address + "\' );";
 
                         esql.executeUpdate(query);
+		System.out.println("------------------------------------------------");
+				System.out.println("New Customer added.");
+				query = "SELECT * FROM Customer WHERE id='";
+				query+= ID + "';";
+				System.out.println("------------------------------------------------");
         }catch (Exception e) {
                 System.err.println (e.getMessage());
         }
@@ -451,7 +456,7 @@ public class MechanicShop{
                 System.out.print("Enter employee's experience(no. of years): ");
                 try {
                         exp = Integer.parseInt(in.readLine());
-                        if(exp < 0 || exp >= 100) throw new RuntimeException("Employee ID cannot be null");
+                        if(exp < 0 || exp >= 100) throw new RuntimeException("Employee's experience cannot be null");
                         break;
                 }catch (Exception e) {
                         System.out.println(e);
@@ -463,6 +468,11 @@ public class MechanicShop{
                 String query = "INSERT INTO Mechanic (id, fname, lname, experience) VALUES (" + ID + ", \'" + first_name + "\', \'" + last_name + "\',  " + exp  + " );";
 
                         esql.executeUpdate(query);
+		System.out.println("------------------------------------------------");
+				System.out.println("New Mechanic added.");
+				query = "SELECT * FROM Mechanic WHERE id='";
+				query+= ID + "';";
+				System.out.println("------------------------------------------------");
         }catch (Exception e) {
                 System.err.println (e.getMessage());
         }
@@ -534,6 +544,11 @@ public class MechanicShop{
                 try{
                         String query = "INSERT INTO Car(vin, make, model, year) VALUES(\'" + in1 + "\',\'" + in2 + "\',\'" + in3 + "\'," + in4 +")";
                         esql.executeUpdate(query);
+			System.out.println("------------------------------------------------");
+				System.out.println("New Car added.");
+				query = "SELECT * FROM Car WHERE vin='";
+				query+= in1 + "';";
+				System.out.println("------------------------------------------------");
                 } catch(Exception e) {
                         System.err.println(e.getMessage());
                 }
@@ -544,7 +559,80 @@ public class MechanicShop{
 	
 	
 	public static void InsertServiceRequest(MechanicShop esql){//4
+       		try{
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+      			Calendar cal = Calendar.getInstance();
+    		        Date date = cal.getTime();
+        		String todaysdate = dateFormat.format(date);
+			String cust_ID="";
+			String car_ID="";
+			System.out.print("Enter the last name of the customer: ");
+                        String lastName = in.readLine();
+			String query = "SELECT * FROM Customer WHERE lname='";
+			query += lastName + "';";
+
+			int customerExists = esql.executeQuery(query); 
+			if (customerExists != 0){ 
+				System.out.println("Enter the customer ID: ");
+				cust_ID = in.readLine();
+			}
+			else{ 
+				System.out.println("There are no customers with that last name. Please add a new customer.");
+				AddCustomer(esql);
+				System.out.println("Reenter the customer ID: ");
+				cust_ID = in.readLine();
+			}	
+			
+			
+			query = "SELECT car_vin FROM Owns WHERE customer_id='";
+			query += cust_ID + "';";
+				
+			int carExists = esql.executeQuery(query); 
+				
+			if (carExists !=0){
+				System.out.println("Enter the VIN: ");
+				car_ID = in.readLine();
+			}
+			else { 
+				System.out.println("The customer doesn't own a car. Please add a new car.");
+				AddCar(esql);
+				System.out.println("Reenter the VIN: ");
+				car_ID = in.readLine();
+			}	
+			
+			query = "SELECT * FROM Owns WHERE car_vin='";
+			query += carID + "' AND customer_id='";
+			query += customerID + "';";
+				
+			int owns = esql.executeQuery(query);
+			if (owns != 0){
+				query = "INSERT INTO Service_Request(rid, customer_id, car_vin, date, odometer, complain) VALUES ('";
+				System.out.println("Enter the Service Request ID: ");
+				int rid = Integer.parseInt(in.readLine());
+				query += rid + "', '";
+				query += cust_ID + "', '" + car_ID + "', " + todaysdate + ", '";
+				System.out.println("Enter the odometer reading: ");
+				String odometer = in.readLine();
+				query += odometer + "', '";
+				System.out.println("What is the issue? ");
+				String complain = in.readLine();
+				query += complain + "');";
+						
+				esql.executeUpdate(query);
 		
+				System.out.println("------------------------------------------------");
+				System.out.println("New service request created.");
+				query = "SELECT * FROM Service_Request WHERE rid='";
+				query+= rid + "';";
+				System.out.println("------------------------------------------------");
+	
+			}
+			else { 
+				System.out.println("This customer doesn't own this car");
+			}
+		} catch(Exception e){
+				System.err.println(e.getMessage());
+		}
 	}
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
@@ -580,7 +668,7 @@ public class MechanicShop{
 	
 	public static void ListCarsBefore1995With50000Milles(MechanicShop esql){//8
 		try{
-			String query = "SELECT DISTINCT make, model, year FROM Car AS C, Service_Request AS S WHERE year < 1995 and S.car_vin = C.vin and S.odometer < 50000;";
+			String query = "SELECT DISTINCT make, model, year FROM Car a, Service_Request b WHERE year < 1995 and b.car_vin = a.vin and b.odometer < 50000;";
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
 		}
@@ -608,7 +696,7 @@ public class MechanicShop{
 	public static void ListCustomersInDescendingOrderOfTheirTotalBill(MechanicShop esql){//9
 		//
 		try{
-			String query = "SELECT C.fname, C.lname, total FROM Customer AS C,(SELECT SR.customer_id, SUM(CR.bill) AS total FROM Closed_Request AS CR, Service_Request AS SR WHERE CR.rid = SR.rid GROUP BY SR.customer_id) AS B WHERE C.id=B.customer_id ORDER BY B.total DESC;";
+			String query = "SELECT a.fname, a.lname, total FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS TotalBill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.total DESC;";
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
 		}
