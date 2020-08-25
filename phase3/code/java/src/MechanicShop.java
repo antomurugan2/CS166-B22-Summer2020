@@ -544,14 +544,21 @@ public class MechanicShop{
                 try{
                         String query = "INSERT INTO Car(vin, make, model, year) VALUES(\'" + in1 + "\',\'" + in2 + "\',\'" + in3 + "\'," + in4 +")";
                         esql.executeUpdate(query);
-			System.out.println("------------------------------------------------");
-				System.out.println("New Car added.");
-				query = "SELECT * FROM Car WHERE vin='";
-				query+= in1 + "';";
-				System.out.println("------------------------------------------------");
                 } catch(Exception e) {
                         System.err.println(e.getMessage());
                 }
+
+	/*	try{
+			System.out.println("------------------------------------------------");
+                                System.out.println("New Car added.");
+                                query = "SELECT * FROM Car WHERE vin='";
+                                query+= in1 + "';";
+                                System.out.println("------------------------------------------------");
+			int rowCount = esql.executeQueryAndPrintResult(query);
+                        System.out.println("total row(s): " + rowCount);
+		}	catch(Exception e) {
+                        System.err.println(e.getMessage());
+          */      		
         }
 
 
@@ -633,8 +640,8 @@ public class MechanicShop{
 	}
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
-		try{
-		String wid,rid, mid, comments, closingdate;
+		
+		String wid,rid, mid, comments, closingdate = "MM/DD/YYYY";
 		int bill;
 		do {
                 System.out.print("Enter the service request ID: ");
@@ -682,11 +689,8 @@ public class MechanicShop{
 		}
 			else { 
 				System.out.println("The service request ID and employee ID do not exist.");
-			}	catch(Exception e){
-				System.err.println(e.getMessage());
 		}
 		      
-		
 	}
 	
 	public static void ListCustomersWithBillLessThan100(MechanicShop esql){//6
@@ -744,7 +748,7 @@ public class MechanicShop{
 	public static void ListCustomersInDescendingOrderOfTheirTotalBill(MechanicShop esql){//9
 		//
 		try{
-			String query = "SELECT a.fname, a.lname, total FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS TotalBill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.total DESC;";
+			String query = "SELECT a.fname, a.lname, total FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS TotalBill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.TotalBill DESC;";
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
 		}
