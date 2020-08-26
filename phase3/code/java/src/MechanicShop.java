@@ -636,8 +636,8 @@ public class MechanicShop{
 				AddCar(esql);
 				System.out.println("Reenter the VIN: ");
 				car_ID = in.readLine();
-				query = "UPDATE Owns SET car_vin = '" + car_ID + "' WHERE customer_id = " + cust_ID +";";
-				esql.executeUpdate(query);
+				/*query = "UPDATE Owns SET car_vin = '" + car_ID + "' WHERE customer_id = " + cust_ID +";";
+				esql.executeUpdate(query);*/
 			}	
 			
 			query = "SELECT * FROM Owns WHERE car_vin='";
