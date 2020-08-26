@@ -603,7 +603,7 @@ public class MechanicShop{
 			if (customerExists != 0){ 
 				do{
 					System.out.println("Choose an option below:\n 1. Select an existing customer\n 2. Create a new customer\n ");
-					user_input = in.readLine();
+					user_input = Integer.pasrseInt(in.readLine());
 					switch(user_input){
 						case 1:
 						System.out.println("Enter the customer ID: ");
