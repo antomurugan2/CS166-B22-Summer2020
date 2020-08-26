@@ -341,18 +341,18 @@ public class MechanicShop{
                 }
         }while (true);
 
-        int ID;
+        String ID;
 
         do {
 		
                 System.out.print("Enter Customer ID: ");
                 try {
-                        ID = Integer.pasrseInt(in.readLine());
+                        ID = in.readLine();
                         String query = "SELECT id FROM Customer WHERE id=";
 			query += ID + ";";
 			int customerExists = esql.executeQuery(query); 
 			if (customerExists != 0) throw new RuntimeException("Customer ID is in use, please enter a new ID.");
-			if(ID <= 0) throw new RuntimeException("Customer ID cannot be null");
+			if(ID.length() <= 0) throw new RuntimeException("Customer ID cannot be null");
                         break;
                 }catch (Exception e) {
                         System.out.println(e);
@@ -412,17 +412,17 @@ public class MechanicShop{
 
         public static void AddMechanic(MechanicShop esql){//2
 
-        int ID;
+        String ID;
 
         do {
                 System.out.print("Enter Employee ID: ");
                 try {
-                        ID = Integer.pasrseInt(in.readLine());
+                        ID = in.readLine();
                         String query = "SELECT id FROM Mechanic WHERE id=";
 			query += ID + ";";
 			int customerExists = esql.executeQuery(query); 
 			if (customerExists != 0) throw new RuntimeException("Employee ID is in use, please enter a new ID.");
-                        if(ID <= 0) throw new RuntimeException("Employee ID cannot be null");
+                        if(ID.length() <= 0) throw new RuntimeException("Employee ID cannot be null");
                         break;
                 }catch (Exception e) {
                         System.out.println(e);
