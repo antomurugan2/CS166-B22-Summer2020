@@ -341,13 +341,13 @@ public class MechanicShop{
                 }
         }while (true);
 
-        String ID;
+        int ID;
 
         do {
 		
                 System.out.print("Enter Customer ID: ");
                 try {
-                        ID = in.readLine();
+                        ID = Integer.pasrseInt(in.readLine());
                         String query = "SELECT id FROM Customer WHERE id=";
 			query += ID + ";";
 			int customerExists = esql.executeQuery(query); 
@@ -412,12 +412,12 @@ public class MechanicShop{
 
         public static void AddMechanic(MechanicShop esql){//2
 
-        String ID;
+        int ID;
 
         do {
                 System.out.print("Enter Employee ID: ");
                 try {
-                        ID = in.readLine();
+                        ID = Integer.pasrseInt(in.readLine());
                         String query = "SELECT id FROM Mechanic WHERE id=";
 			query += ID + ";";
 			int customerExists = esql.executeQuery(query); 
@@ -469,7 +469,7 @@ public class MechanicShop{
                 System.out.print("Enter employee's experience(no. of years): ");
                 try {
                         exp = Integer.parseInt(in.readLine());
-                        if(exp < 0 || exp >= 100) throw new RuntimeException("Employee's experience cannot be null");
+                        if(exp < 0 || exp >= 100) throw new RuntimeException("Employee's experience cannot be null or greater or equal to 100");
                         break;
                 }catch (Exception e) {
                         System.out.println(e);
