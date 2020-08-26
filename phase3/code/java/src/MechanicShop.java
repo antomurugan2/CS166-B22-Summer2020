@@ -626,18 +626,18 @@ public class MechanicShop{
 				
 			int carExists = esql.executeQuery(query); 
 				
-			if (carExists == 0){
+			if (carExists != 0){
+				System.out.println("Enter the VIN: ");
+				car_ID = in.readLine();
+				
+			}
+			else { 
 				System.out.println("The customer doesn't own a car. Please add a new car.");
 				AddCar(esql);
 				System.out.println("Reenter the VIN: ");
 				car_ID = in.readLine();
-				query = "UPDATE Owns SET car_vin = " + car_ID + " WHERE customer_id = " + cust_ID +";";
+				query = "UPDATE Owns SET car_vin = '" + car_ID + "' WHERE customer_id = " + cust_ID +";";
 				esql.executeUpdate(query);
-				
-			}
-			else { 
-				System.out.println("Enter the VIN: ");
-				car_ID = in.readLine();
 			}	
 			
 			query = "SELECT * FROM Owns WHERE car_vin='";
