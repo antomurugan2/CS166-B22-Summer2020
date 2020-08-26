@@ -567,7 +567,7 @@ public class MechanicShop{
               		
         }
 
-
+	}
 		
 	
 	
@@ -627,7 +627,7 @@ public class MechanicShop{
 				
 			String carExists = esql.executeQuery(query); 
 				
-			if (carExists.equals("EMPTY"){
+			if (carExists.equals("EMPTY")){
 				System.out.println("The customer doesn't own a car. Please add a new car.");
 				AddCar(esql);
 				System.out.println("Reenter the VIN: ");
@@ -692,7 +692,7 @@ public class MechanicShop{
 			if(validDate == 0) {throw new RuntimeException("Closing date can't be before request date");
                         continue;}
 			else break;
-			}while(true)
+			}while(true);
 			
                         int bill;
                         do {
