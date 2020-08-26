@@ -615,7 +615,7 @@ public class MechanicShop{
 				cust_ID = in.readLine();
 				query = "SELECT COUNT(ownership_id) FROM OWNS;";
 				int maxOwnership = esql.executeQuery(query);
-				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", "+ cust_ID + ", 'EMPTY' );";
+				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", "+ cust_ID + ", 0 );";
 				esql.executeUpdate(query);
 			}	
 			
@@ -625,9 +625,9 @@ public class MechanicShop{
 
 			esql.executeQueryAndPrintResult(query);
 				
-			String carExists = esql.executeQuery(query); 
+			int carExists = esql.executeQuery(query); 
 				
-			if (carExists.equals("EMPTY")){
+			if (carExists == 0){
 				System.out.println("The customer doesn't own a car. Please add a new car.");
 				AddCar(esql);
 				System.out.println("Reenter the VIN: ");
