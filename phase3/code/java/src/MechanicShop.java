@@ -556,7 +556,7 @@ public class MechanicShop{
 		try{
 			System.out.println("------------------------------------------------");
                                 System.out.println("New Car added.");
-                                query = "SELECT * FROM Car WHERE vin='";
+                               String query = "SELECT * FROM Car WHERE vin='";
                                 query+= in1 + "';";
 				esql.executeQueryAndPrintResult(query);
                                 System.out.println("------------------------------------------------");
@@ -613,7 +613,7 @@ public class MechanicShop{
 				AddCustomer(esql);
 				System.out.println("Reenter the customer ID: ");
 				cust_ID = in.readLine();
-				querry = "SELECT COUNT(ownership_id) FROM OWNS;";
+				String query = "SELECT COUNT(ownership_id) FROM OWNS;";
 				int maxOwnership = esql.executeQuery(query);
 				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", "+ cust_ID + ", 'EMPTY' );";
 				esql.executeUpdate(query);
