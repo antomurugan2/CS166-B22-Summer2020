@@ -599,17 +599,17 @@ public class MechanicShop{
 			esql.executeQueryAndPrintResult(query);
 
 			int customerExists = esql.executeQuery(query); 
-			String user_input;
+			int user_input;
 			if (customerExists != 0){ 
 				do{
 					System.out.println("Choose an option below:\n 1. Select an existing customer\n 2. Create a new customer\n ");
 					user_input = in.readLine();
 					switch(user_input){
-						case "1":
+						case 1:
 						System.out.println("Enter the customer ID: ");
 						cust_ID = in.readLine();
 						break;
-						case "2":
+						case 2:
 						AddCustomer(esql);
 						System.out.println("Reenter the customer ID: ");
 						cust_ID = in.readLine();
@@ -619,7 +619,7 @@ public class MechanicShop{
 						break;
 					}
 					
-				} while (user_input != "1" && user_input != "2");
+				} while (user_input != 1 && user_input != 2);
 			}
 			else{ 
 				System.out.println("There are no customers with that last name. Please add a new customer.");
