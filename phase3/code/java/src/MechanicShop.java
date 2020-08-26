@@ -572,9 +572,10 @@ public class MechanicShop{
                                 System.out.println("New Car added.");
                                String query = "SELECT * FROM Car WHERE vin='";
                                 query+= in1 + "';";
-                                System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
                         System.out.println("total row(s): " + rowCount);
+                                System.out.println("------------------------------------------------");
+			
 		}	catch(Exception e) {
                         System.err.println(e.getMessage());
               		
@@ -654,7 +655,7 @@ public class MechanicShop{
 				esql.executeUpdate(query);*/
 			}	
 			
-			query = "SELECT * FROM Owns WHERE car_vin='";
+			query = "SELECT car_vin FROM Owns WHERE car_vin='";
 			query += car_ID + "' AND customer_id='";
 			query += cust_ID + "';";
 				
