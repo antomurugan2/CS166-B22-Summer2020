@@ -634,7 +634,7 @@ public class MechanicShop{
 			}	
 			
 			
-			query = "SELECT car_vin FROM Owns WHERE customer_id='";
+			query = "SELECT * FROM Owns WHERE customer_id='";
 			query += cust_ID + "';";
 
 			esql.executeQueryAndPrintResult(query);
@@ -656,9 +656,8 @@ public class MechanicShop{
 			}	
 			
 			query = "SELECT car_vin FROM Owns WHERE car_vin='";
-			query += car_ID + "' AND customer_id='";
-			query += cust_ID + "';";
-				
+			query += car_ID + "';";
+			esql.executeQueryAndPrintResult(query);
 			int owns = esql.executeQuery(query);
 			if (owns != 0){
 				query = "INSERT INTO Service_Request(rid, customer_id, car_vin, date, odometer, complain) VALUES ('";
