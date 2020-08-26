@@ -341,13 +341,18 @@ public class MechanicShop{
                 }
         }while (true);
 
-        int ID;
+        String ID;
 
         do {
+		
                 System.out.print("Enter Customer ID: ");
                 try {
-                        ID = Integer.parseInt(in.readLine());
-                        if(ID <= 0) throw new RuntimeException("Customer ID cannot be null");
+                        ID = in.readLine();
+                        String query = "SELECT id FROM Customer WHERE id=";
+			query += ID + ";";
+			int customerExists = esql.executeQuery(query); 
+			if (customerExists != 0) throw new RuntimeException("Customer ID is in use, please enter a new ID.");
+			if(ID <= 0) throw new RuntimeException("Customer ID cannot be null");
                         break;
                 }catch (Exception e) {
                         System.out.println(e);
@@ -407,12 +412,16 @@ public class MechanicShop{
 
         public static void AddMechanic(MechanicShop esql){//2
 
-        int ID;
+        String ID;
 
         do {
                 System.out.print("Enter Employee ID: ");
                 try {
-                        ID = Integer.parseInt(in.readLine());
+                        ID = in.readLine();
+                        String query = "SELECT id FROM Mechanic WHERE id=";
+			query += ID + ";";
+			int customerExists = esql.executeQuery(query); 
+			if (customerExists != 0) throw new RuntimeException("Employee ID is in use, please enter a new ID.");
                         if(ID <= 0) throw new RuntimeException("Employee ID cannot be null");
                         break;
                 }catch (Exception e) {
@@ -489,8 +498,13 @@ public class MechanicShop{
 	    String in1;
                 do{
                         System.out.print("\tEnter VIN: ");
+			
                         try{
-                                in1 = in.readLine();
+				in1 = in.readLine();
+                       		 String query = "SELECT vin FROM Car WHERE vin=";
+			query += in1 + ";";
+			int carExists = esql.executeQuery(query); 
+			if (carExists != 0) throw new RuntimeException("Car VIN is in use, please enter a new VIN.");                   
                                 if(in1.length() <= 0 || in1.length() > 16) {
                                         throw new RuntimeException("VIN cannot be null or exceed 16 characters");
                                 }
