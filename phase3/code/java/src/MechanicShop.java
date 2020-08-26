@@ -690,7 +690,7 @@ public class MechanicShop{
 			query = "SELECT date FROM Service_Request WHERE date <=  " + closingdate + ";";
 			int validDate = esql.executeQuery(query);
 			if(validDate == 0) {throw new RuntimeException("Closing date can't be before request date");
-                        continue;}
+                        }
 			else break;
 			}while(true);
 			
