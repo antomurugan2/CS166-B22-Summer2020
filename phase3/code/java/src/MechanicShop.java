@@ -395,6 +395,7 @@ public class MechanicShop{
 				System.out.println("New Customer added.");
 				query = "SELECT * FROM Customer WHERE id='";
 				query+= ID + "';";
+				esql.executeQueryAndPrintResult(query);
 				System.out.println("------------------------------------------------");
         }catch (Exception e) {
                 System.err.println (e.getMessage());
@@ -475,6 +476,7 @@ public class MechanicShop{
 				System.out.println("New Mechanic added.");
 				query = "SELECT * FROM Mechanic WHERE id='";
 				query+= ID + "';";
+				esql.executeQueryAndPrintResult(query);
 				System.out.println("------------------------------------------------");
         }catch (Exception e) {
                 System.err.println (e.getMessage());
@@ -551,17 +553,18 @@ public class MechanicShop{
                         System.err.println(e.getMessage());
                 }
 
-	/*	try{
+		try{
 			System.out.println("------------------------------------------------");
                                 System.out.println("New Car added.");
                                 query = "SELECT * FROM Car WHERE vin='";
                                 query+= in1 + "';";
+				esql.executeQueryAndPrintResult(query);
                                 System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
                         System.out.println("total row(s): " + rowCount);
 		}	catch(Exception e) {
                         System.err.println(e.getMessage());
-          */      		
+              		
         }
 
 
@@ -610,28 +613,32 @@ public class MechanicShop{
 				AddCustomer(esql);
 				System.out.println("Reenter the customer ID: ");
 				cust_ID = in.readLine();
+				querry = "SELECT COUNT(ownership_id) FROM OWNS;";
+				int maxOwnership = esql.executeQuery(query);
+				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", "+ cust_ID + ", 'EMPTY' );";
+				esql.executeUpdate(query);
 			}	
 			
 			
-			query = "SELECT * FROM Owns WHERE customer_id='";
+			query = "SELECT car_vin FROM Owns WHERE customer_id='";
 			query += cust_ID + "';";
 
 			esql.executeQueryAndPrintResult(query);
 				
-			int carExists = esql.executeQuery(query); 
+			String carExists = esql.executeQuery(query); 
 				
-			if (carExists !=0){
-				System.out.println("Enter the VIN: ");
-				car_ID = in.readLine();
-			}
-			else { 
+			if (carExists.equals("EMPTY"){
 				System.out.println("The customer doesn't own a car. Please add a new car.");
 				AddCar(esql);
 				System.out.println("Reenter the VIN: ");
 				car_ID = in.readLine();
-				int maxOwnership = esql.executeQuery(query);
-				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", "+ cust_id + "," + car_id + ");";
+				querry = "UPDATE Owns SET car_vin = " + car_ID + " WHERE customer_id = " + cust_ID +";";
 				esql.executeUpdate(query);
+				
+			}
+			else { 
+				System.out.println("Enter the VIN: ");
+				car_ID = in.readLine();
 			}	
 			
 			query = "SELECT * FROM Owns WHERE car_vin='";
@@ -663,7 +670,7 @@ public class MechanicShop{
 	
 			}
 			else { 
-				System.out.println("This customer doesn't own this car");
+				System.out.println("Not able to create service request for this customer.");
 			}
 		} catch(Exception e){
 				System.err.println(e.getMessage());
@@ -682,7 +689,7 @@ public class MechanicShop{
 			do{
 			query = "SELECT date FROM Service_Request WHERE date <=  " + closingdate + ";";
 			int validDate = esql.executeQuery(query);
-			if(validDate == 0) {throw new RuntimeException("Invalid date!");
+			if(validDate == 0) {throw new RuntimeException("Closing date can't be before request date");
                         continue;}
 			else break;
 			}while(true)
