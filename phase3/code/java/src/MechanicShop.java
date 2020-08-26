@@ -23,6 +23,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;  
+import java.util.Date;
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -567,7 +570,9 @@ public class MechanicShop{
 	
 	public static void InsertServiceRequest(MechanicShop esql){//4
        		try{
-        		String todaysdate = "2020-04-04";
+        		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+ 			LocalDateTime now = LocalDateTime.now();
+   			String todaysdate = dtf.format(now);
 			String cust_ID="";
 			String car_ID="";
 			System.out.print("Enter the last name of the customer: ");
@@ -578,23 +583,27 @@ public class MechanicShop{
 			esql.executeQueryAndPrintResult(query);
 
 			int customerExists = esql.executeQuery(query); 
+			String user_input;
 			if (customerExists != 0){ 
 				do{
-					System.out.println("Do you want to add a new customer? (y/n)");
-					String user_input = in.readLine();
-					if(user_input.equals( "y") || user_input.equals("Y")) {
-						AddCustomer(esql);
-						break;
-					}
-					else if (user_input.equals("n") || user_input.equals("N")) {
+					System.out.println("Choose an option below:\n 1. Select an existing customer\n 2. Create a new customer\n ");
+					user_input = in.readLine();
+					switch(user_input){
+						case "1":
 						System.out.println("Enter the customer ID: ");
 						cust_ID = in.readLine();
 						break;
+						case "2":
+						AddCustomer(esql);
+						System.out.println("Reenter the customer ID: ");
+						cust_ID = in.readLine();
+						break;
+						default :
+						System.out.println("Invalid input");
+						break;
 					}
-					else {
-						System.out.println(“Invalid input”);
-					}
-				} while (true);
+					
+				} while (user_input != "1" && user_input != "2");
 			}
 			else{ 
 				System.out.println("There are no customers with that last name. Please add a new customer.");
@@ -620,6 +629,9 @@ public class MechanicShop{
 				AddCar(esql);
 				System.out.println("Reenter the VIN: ");
 				car_ID = in.readLine();
+				int maxOwnership = esql.executeQuery(query);
+				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", "+ cust_id + "," + car_id + ");";
+				esql.executeUpdate(query);
 			}	
 			
 			query = "SELECT * FROM Owns WHERE car_vin='";
@@ -632,7 +644,7 @@ public class MechanicShop{
 				System.out.println("Enter the Service Request ID: ");
 				int rid = Integer.parseInt(in.readLine());
 				query += rid + "', '";
-				query += cust_ID + "', '" + car_ID + "',’ " + todaysdate + " ’, '";
+				query += cust_ID + "', '" + car_ID + "',' " + todaysdate + " ', '";
 				System.out.println("Enter the odometer reading: ");
 				String odometer = in.readLine();
 				query += odometer + "', '";
@@ -660,10 +672,21 @@ public class MechanicShop{
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
 		try{
-                        //String query = "SELECT * FROM Service_Request";
-                        //esql.executeQueryAndPrintResult(query);
-
-                        String wid,rid, mid, comments, closingdate = "2020-26-08";
+                     
+			String wid,rid, mid, comments, query;
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+ 			LocalDateTime now = LocalDateTime.now();
+   			String closingdate = dtf.format(now);
+			
+			do{
+			query = "SELECT date FROM Service_Request WHERE date <=  " + closingdate + ";";
+			int validDate = esql.executeQuery(query);
+			if(validDate == 0) {throw new RuntimeException("Invalid date!");
+                        continue;}
+			else break;
+			}while(true)
+			
                         int bill;
                         do {
                                 System.out.print("Enter the service request ID: ");
