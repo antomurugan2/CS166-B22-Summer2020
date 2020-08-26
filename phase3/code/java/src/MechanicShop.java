@@ -501,10 +501,10 @@ public class MechanicShop{
 			
                         try{
 				in1 = in.readLine();
-                       		String query = "SELECT vin FROM Car WHERE vin=";
+                       		/*String query = "SELECT vin FROM Car WHERE vin=";
 				query += in1 + ";";
 				int carExists = esql.executeQuery(query); 
-				if (carExists != 0) throw new RuntimeException("Car VIN is in use, please enter a new VIN.");                   
+				if (carExists != 0) throw new RuntimeException("Car VIN is in use, please enter a new VIN.");   */                
                                 if(in1.length() <= 0 || in1.length() > 16) {
                                 throw new RuntimeException("VIN cannot be null or exceed 16 characters");
                                 }
