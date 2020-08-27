@@ -643,7 +643,7 @@ public class MechanicShop{
                         					System.out.println(e);
                         					continue;
 							}
-						} while(true)
+						} while(true);
 						break;
 						case "2":
 						// To create a new customer call the add customer function
