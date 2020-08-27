@@ -597,74 +597,69 @@ public class MechanicShop{
 			String query = "SELECT * FROM Customer WHERE lname='";
 			query += lastName + "';";
 
-			esql.executeQueryAndPrintResult(query);
-
 			int customerExists = esql.executeQuery(query); 
-			int user_input;
-			if (customerExists != 0){ 
+			if (customerExists != 0){
+				String user_input; 
 				do{
 					System.out.println("Choose an option below:\n 1. Select an existing customer\n 2. Create a new customer\n ");
-					user_input = Integer.parseInt(in.readLine());
-					switch(user_input){
-						case 1:
+					user_input = in.readLine();
+					switch(user_input) {
+						case "1":
 						System.out.println("Enter the customer ID: ");
 						cust_ID = in.readLine();
 						break;
-						case 2:
+						case "2":
 						AddCustomer(esql);
-						System.out.println("Reenter the customer ID: ");
+						System.out.println("Enter the customer ID: ");
 						cust_ID = in.readLine();
 						break;
 						default :
 						System.out.println("Invalid input");
-						break;
 					}
-					
-				} while (user_input != 1 && user_input != 2);
+				} while (!(user_input.equals("1")) && !(user_input.equals("2")));
 			}
 			else{ 
 				System.out.println("There are no customers with that last name. Please add a new customer.");
 				AddCustomer(esql);
 				System.out.println("Reenter the customer ID: ");
 				cust_ID = in.readLine();
-				/*query = "SELECT COUNT(ownership_id) FROM OWNS;";
-				int maxOwnership = esql.executeQuery(query);
-				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", "+ cust_ID + ", 0 );";
-				esql.executeUpdate(query);*/
 			}	
-			
 			
 			query = "SELECT * FROM Owns WHERE customer_id='";
 			query += cust_ID + "';";
-
+				
 			esql.executeQueryAndPrintResult(query);
-				
+		
 			int carExists = esql.executeQuery(query); 
-				
-			if (carExists != 0){
+			
+			if (carExists !=0){
 				System.out.println("Enter the VIN: ");
 				car_ID = in.readLine();
-				
+				query = "SELECT COUNT(ownership_id) FROM Owns";
+				int maxOwnership = esql.executeQuery(query);
+				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", " + cust_ID + "," + car_ID + ");";
+
 			}
 			else { 
 				System.out.println("The customer doesn't own a car. Please add a new car.");
 				AddCar(esql);
 				System.out.println("Reenter the VIN: ");
 				car_ID = in.readLine();
-				/*query = "UPDATE Owns SET car_vin = '" + car_ID + "' WHERE customer_id = " + cust_ID +";";
-				esql.executeUpdate(query);*/
 			}	
 			
-			query = "SELECT car_vin FROM Owns WHERE car_vin='";
-			query += car_ID + "';";
-			esql.executeQueryAndPrintResult(query);
+			query = "SELECT * FROM Owns WHERE car_vin='";
+			query += car_ID + "' AND customer_id='";
+			query += cust_ID + "';";
+			//esql.executeQueryAndPrintResult(query);
+				
 			int owns = esql.executeQuery(query);
-			if (owns != 0){
+			//System.out.println(owns);
+			//if (owns != 0){
 				query = "INSERT INTO Service_Request(rid, customer_id, car_vin, date, odometer, complain) VALUES ('";
 				System.out.println("Enter the Service Request ID: ");
 				int rid = Integer.parseInt(in.readLine());
 				query += rid + "', '";
-				query += cust_ID + "', '" + car_ID + "',' " + todaysdate + " ', '";
+				query += cust_ID + "', '" + car_ID + "','" + todaysdate + "', '";
 				System.out.println("Enter the odometer reading: ");
 				String odometer = in.readLine();
 				query += odometer + "', '";
@@ -681,13 +676,14 @@ public class MechanicShop{
 				esql.executeQueryAndPrintResult(query);
 				System.out.println("------------------------------------------------");
 	
-			}
-			else { 
-				System.out.println("Not able to create service request for this customer.");
-			}
+			//}
+			//else { 
+			//	System.out.println("This customer doesn't own this car");
+			//}
 		} catch(Exception e){
 				System.err.println(e.getMessage());
 		}
+	
 	}
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
@@ -699,66 +695,59 @@ public class MechanicShop{
  			LocalDateTime now = LocalDateTime.now();
    			String closingdate = dtf.format(now);
 			
-			do{
-			query = "SELECT date FROM Service_Request WHERE date <=  " + closingdate + ";";
-			int validDate = esql.executeQuery(query);
-			if(validDate == 0) {throw new RuntimeException("Closing date can't be before request date");
-                        }
-			else break;
-			}while(true);
-			
-                        int bill;
-                        do {
-                                System.out.print("Enter the service request ID: ");
-                                 try {
-                                        rid = in.readLine();
-                                        query = "SELECT * FROM Service_Request WHERE rid = " + rid + ";";
-                                        int rid_exists = esql.executeQuery(query);
-                                        if(rid_exists == 0) {
-                                                throw new RuntimeException("Service Request does not exist");
-                                        }break;
-
-                                }catch (Exception e) {
-                                        System.out.println (e);
-                                        continue;
-                                }
-                        }while (true);
-
-                        do {
-                                System.out.print("Enter the Employee's ID: ");
-                                try {
-                                        mid = in.readLine();
-                                        query = "SELECT * FROM Mechanic WHERE id = " + mid + ";";
-                                        int mid_exists = esql.executeQuery(query);
-                                        if(mid_exists == 0) {
-                                                throw new RuntimeException("Mechanic does not exist");
-                                        }break;
-
-                                }catch (Exception e) {
-                                        System.out.println(e);
-                                        continue;
-                                }
-                        }while (true);
-        System.out.println("Enter the Close request ID: ");
-                        wid = in.readLine();
-                        System.out.println("Any comments?");
-                        comments = in.readLine();
-                        System.out.println("What's the total amount due? ");
-                        bill = Integer.parseInt(in.readLine());
-                        query = "INSERT INTO Closed_Request(wid, rid, mid, date, comment, bill) VALUES (" + wid + ", " + rid + "," + mid + ", '" + closingdate + "' , '" + comments +"', " + bill + ");" ;
-                        esql.executeUpdate(query);
-
-                        System.out.println("------------------------------------------------");
-                        System.out.println("Service request closed.");
-                        query = "SELECT * FROM Closed_Request WHERE rid='";
-                        query+= rid + "';";
-                        esql.executeQueryAndPrintResult(query);
-                        System.out.println("------------------------------------------------");
-
-                }catch(Exception e){
-                        System.err.println(e.getMessage());
-                }
+			int bill;
+			do {
+                		System.out.print("Enter the service request ID: ");
+               			 try {
+                      		 	rid = in.readLine();
+					query = "SELECT * FROM Service_Request WHERE rid = " + rid + ";";
+					int rid_exists = esql.executeQuery(query);
+					if(rid_exists == 0) {
+						throw new RuntimeException("Service Request does not exist");
+					}break;
        
+             	   		}catch (Exception e) {
+                   	     		System.out.println (e);
+                   	     		continue;
+           	    	 	}
+			}while (true);
+		
+			do {
+                		System.out.print("Enter the Employee's ID: ");
+              		  	try {
+                        		mid = in.readLine();
+                       			query = "SELECT * FROM Mechanic WHERE id = " + mid + ";";
+					int mid_exists = esql.executeQuery(query);
+					if(mid_exists == 0) {
+						throw new RuntimeException("Mechanic does not exist");
+					}break;
+
+				}catch (Exception e) {
+                        		System.out.println(e);
+                       			continue;
+               		 	}
+        		}while (true);
+		
+		
+			System.out.println("Enter the Close request ID: ");
+			wid = in.readLine();
+			System.out.println("Any comments?");
+			comments = in.readLine();
+			System.out.println("What's the total amount due? ");
+			bill = Integer.parseInt(in.readLine());
+			query = "INSERT INTO Closed_Request(wid, rid, mid, date, comment, bill) VALUES (" + wid + ", " + rid + "," + mid + ", '" + closingdate + "' , '" + comments +"', " + bill + ");" ;
+			esql.executeUpdate(query);
+		
+			System.out.println("------------------------------------------------");
+			System.out.println("Service request closed.");
+			query = "SELECT * FROM Closed_Request WHERE rid='";
+			query+= rid + "';";
+			esql.executeQueryAndPrintResult(query);
+			System.out.println("------------------------------------------------");
+
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+		}
 
 
 		      
