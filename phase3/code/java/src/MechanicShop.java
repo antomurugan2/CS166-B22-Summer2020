@@ -684,11 +684,11 @@ public class MechanicShop{
 			
 				
 				// Insert user inputs into the Service_Request table
-				query = "INSERT INTO Service_Request(rid, customer_id, car_vin, date, odometer, complain) VALUES ('";
+				query = "INSERT INTO Service_Request(rid, customer_id, car_vin, date, odometer, complain) VALUES (";
 				System.out.println("Enter the Service Request ID: ");
 				int rid = Integer.parseInt(in.readLine());
-				query += rid + "', '";
-				query += cust_ID + "', '" + car_ID + "','" + todaysdate + "', '";
+				query += rid + ", ";
+				query += cust_ID + ", '" + car_ID + "','" + todaysdate + "', '";
 				System.out.println("Enter the odometer reading: ");
 				String odometer = in.readLine();
 				query += odometer + "', '";
@@ -698,7 +698,7 @@ public class MechanicShop{
 						
 				esql.executeUpdate(query);
 						
-				esql.executeUpdate(query);
+				
 				// Display the new information added to the database
 				System.out.println("------------------------------------------------");
 				System.out.println("New service request created.");
