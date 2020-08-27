@@ -788,7 +788,7 @@ public class MechanicShop{
 	public static void ListCustomersWithBillLessThan100(MechanicShop esql){//6
 		try{
 			// Display customers who have bills less than $100
-			String query = "SELECT c.fname AS FirstName, c.lname AS LastName, c.id AS CustomerID, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
+			String query = "SELECT c.fname AS First_Name, c.lname AS Last_Name, c.id AS Customer_ID, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
 			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
@@ -802,7 +802,7 @@ public class MechanicShop{
 	public static void ListCustomersWithMoreThan20Cars(MechanicShop esql){//7
 		try{
 			// Display customers who own more than 20 cars
-                        String query = "SELECT fname AS FirstName, lname AS LastName FROM Customer WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20)";
+                        String query = "SELECT fname AS First_Name, lname AS Last_Name, COUNT(a.ownership_id) FROM Customer, Owns a WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20) AND id = a.customer_id";
 			System.out.println("------------------------------------------------");
                         int rowCount = esql.executeQuery(query);
                         esql.executeQueryAndPrintResult(query);
@@ -831,7 +831,7 @@ public class MechanicShop{
 	public static void ListKCarsWithTheMostServices(MechanicShop esql){//9
 		//
 		try{
-			String query = "SELECT make, model, a.num_requests FROM Car c, (SELECT car_vin, COUNT(rid) AS num_requests FROM Service_Request GROUP BY car_vin ) AS a WHERE a.car_vin = c.vin ORDER BY a.num_requests DESC LIMIT "	;
+			String query = "SELECT make, model, a.number_of_requests FROM Car c, (SELECT car_vin, COUNT(rid) AS number_of_requests FROM Service_Request GROUP BY car_vin ) AS a WHERE a.car_vin = c.vin ORDER BY a.number_of_requests DESC LIMIT "	;
 			System.out.println("Enter the number of cars you want to view: ");
 			String num = in.readLine();
 			query += num + ";";
@@ -848,7 +848,7 @@ public class MechanicShop{
 	public static void ListCustomersInDescendingOrderOfTheirTotalBill(MechanicShop esql){//10
 		//
 		try{
-			String query = "SELECT a.fname, a.lname, TotalBill FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS TotalBill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.TotalBill DESC;";
+			String query = "SELECT a.fname AS first_name, a.lname AS last_name, Total_Bill FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS Total_Bill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.Total_Bill DESC;";
 			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
