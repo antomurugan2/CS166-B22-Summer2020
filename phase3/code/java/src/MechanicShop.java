@@ -407,7 +407,7 @@ public class MechanicShop{
 		// Display the new information added to the table
 		System.out.println("------------------------------------------------");
 				System.out.println("New Customer added.");
-				query = "\x"
+				query = "\x";
 				esql.executeUpdate(query);	
 				query = "SELECT id AS Customer_ID, fname AS First_Name, lname AS Last_Name, phone AS Phone_Number, address FROM Customer WHERE id='";
 				query+= ID + "';";
@@ -500,6 +500,8 @@ public class MechanicShop{
 
                         esql.executeUpdate(query);
 		// Display the new information added to the table
+		query = "\x";
+				esql.executeUpdate(query);
 		System.out.println("------------------------------------------------");
 				System.out.println("New Mechanic added.");
 				query = "SELECT id AS employee_id, fname AS First_Name, lname AS Last_Name, experience FROM Mechanic WHERE id='";
@@ -589,6 +591,8 @@ public class MechanicShop{
 			// Inser user inputs into the Car table
                         String query = "INSERT INTO Car(vin, make, model, year) VALUES(\'" + in1 + "\',\'" + in2 + "\',\'" + in3 + "\'," + in4 +")";
                         esql.executeUpdate(query);
+			query = "\x";
+				esql.executeUpdate(query);
                		// Display new information added to the database
 			System.out.println("------------------------------------------------");
                                 System.out.println("New Car added.");
@@ -699,7 +703,8 @@ public class MechanicShop{
 				query += complain + "');";
 						
 				esql.executeUpdate(query);
-						
+						query = "\x";
+				esql.executeUpdate(query);
 				
 				// Display the new information added to the database
 				System.out.println("------------------------------------------------");
