@@ -801,9 +801,8 @@ public class MechanicShop{
 			// Display customers who own more than 20 cars
 			query = "SELECT fname, lname FROM Customer WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20)";
 			System.out.println("------------------------------------------------");
-                        int rowCount = esql.executeQuery(query);
+                       
                         esql.executeQueryAndPrintResult(query);
-			System.out.println("total row(s): " + rowCount);
 			System.out.println("------------------------------------------------");
                 } catch(Exception e) {
                         System.err.println(e.getMessage());
