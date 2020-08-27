@@ -629,21 +629,7 @@ public class MechanicShop{
 					switch(user_input) {
 						case "1":
 						System.out.println("Enter the customer ID: ");
-						do{
-							try {
-                        				cust_ID = in.readLine();
-							// Check if ID matches the id from the results
-                      				  	query = "SELECT * FROM Customer WHERE id= ";
-							query += cust_ID + " ;";
-							int validCustomer = esql.executeQuery(query); 
-							// If ID doesn't match the results then throw an exception
-							if (validCustomer != 0) throw new RuntimeException("Customer ID doesn't match the results, please enter an ID from the results");
-                        				break; // Break out of the loop if user input is correct
-                					}catch (Exception e) {
-                        					System.out.println(e);
-                        					continue;
-							}
-						} while(true);
+                        			cust_ID = in.readLine();
 						break;
 						case "2":
 						// To create a new customer call the add customer function
