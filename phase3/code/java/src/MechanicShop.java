@@ -793,7 +793,7 @@ public class MechanicShop{
 			String query = "EXPLAIN SELECT c.fname AS First_Name, c.lname AS Last_Name, c.id AS Customer_ID, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
 			esql.executeQueryAndPrintResult(query);
 			// Display customers who have bills less than $100
-			String query = "SELECT c.fname AS First_Name, c.lname AS Last_Name, c.id AS Customer_ID, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
+			query = "SELECT c.fname AS First_Name, c.lname AS Last_Name, c.id AS Customer_ID, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
 			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
@@ -810,7 +810,7 @@ public class MechanicShop{
                         String query = "EXPLAIN SELECT fname AS First_Name, lname AS Last_Name, COUNT(a.ownership_id) FROM Customer, Owns a WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20) AND id = a.customer_id";
 			esql.executeQueryAndPrintResult(query);
 			// Display customers who own more than 20 cars
-			String query = "SELECT fname AS First_Name, lname AS Last_Name, COUNT(a.ownership_id) FROM Customer, Owns a WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20) AND id = a.customer_id";
+			query = "SELECT fname AS First_Name, lname AS Last_Name, COUNT(a.ownership_id) FROM Customer, Owns a WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20) AND id = a.customer_id";
 			System.out.println("------------------------------------------------");
                         int rowCount = esql.executeQuery(query);
                         esql.executeQueryAndPrintResult(query);
@@ -861,7 +861,7 @@ public class MechanicShop{
 			String query = "EXPLAIN SELECT a.fname AS first_name, a.lname AS last_name, Total_Bill FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS Total_Bill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.Total_Bill DESC;";
 			esql.executeQueryAndPrintResult(query);
 			// Display customers in descending order of their total bill
-			String query = "SELECT a.fname AS first_name, a.lname AS last_name, Total_Bill FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS Total_Bill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.Total_Bill DESC;";
+			query = "SELECT a.fname AS first_name, a.lname AS last_name, Total_Bill FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS Total_Bill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.Total_Bill DESC;";
 			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
