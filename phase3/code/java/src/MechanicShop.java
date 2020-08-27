@@ -518,12 +518,12 @@ public class MechanicShop{
 			
                         try{
 				in1 = in.readLine();
-				// Check if VIN is already in the database
+				/*// Check if VIN is already in the database
                        		String query = "SELECT vin FROM Car WHERE vin=";
 				query += in1 + ";";
 				int carExists = esql.executeQuery(query); 
 				// If it is then prompt the user to input a new VIN
-				if (carExists != 0) throw new RuntimeException("Car VIN is in use, please enter a new VIN.");  
+				if (carExists != 0) throw new RuntimeException("Car VIN is in use, please enter a new VIN.");  */
 				//Check if user input matches the constraints of the database
                                 if(in1.length() <= 0 || in1.length() > 16) {
                                 throw new RuntimeException("VIN cannot be null or exceed 16 characters");
