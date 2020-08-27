@@ -312,12 +312,13 @@ public class MechanicShop{
 	 String first_name;
 
         do {
-                System.out.print("Enter First name: ");
+                System.out.print("Enter First name: ");									
                 try {
                         first_name = in.readLine();
+			//Check if user input matches the constraints of the database
                         if(first_name.length() <= 0 || first_name.length() > 32) {
-                                throw new RuntimeException("First name cannot be null or exceed 32 characters");
-                        }break;
+                                throw new RuntimeException("First name cannot be null or exceed 32 characters");			
+                        }break; // Break out of the loop if user input is correct
 
                 }catch (Exception e) {
                         System.out.println (e);
@@ -331,9 +332,10 @@ public class MechanicShop{
                 System.out.print("Enter Last name: ");
                 try {
                         last_name = in.readLine();
+			//Check if user input matches the constraints of the database
                         if(last_name.length() <= 0 || last_name.length() > 32) {
                         throw new RuntimeException("Last name cannot be null or exceed 32 characters");
-                }break;
+                }break; // Break out of the loop if user input is correct
 
                 }catch (Exception e) {
                         System.out.println(e);
@@ -348,12 +350,15 @@ public class MechanicShop{
                 System.out.print("Enter Customer ID: ");
                 try {
                         ID = in.readLine();
+			// Check if ID is already in the database
                         String query = "SELECT id FROM Customer WHERE id=";
 			query += ID + ";";
 			int customerExists = esql.executeQuery(query); 
+			// If ID exists in the database prompt the user to input a new ID
 			if (customerExists != 0) throw new RuntimeException("Customer ID is in use, please enter a new ID.");
+			//Check if user input matches the constraints of the database
 			if(ID.length() <= 0) throw new RuntimeException("Customer ID cannot be null");
-                        break;
+                        break; // Break out of the loop if user input is correct
                 }catch (Exception e) {
                         System.out.println(e);
                         continue;
@@ -366,9 +371,10 @@ public class MechanicShop{
                 System.out.print("Enter Phone number: ");
                 try {
                         phone_num = in.readLine();
+			//Check if user input matches the constraints of the database
                         if(phone_num.length() <= 0 || phone_num.length() > 13) {
                         throw new RuntimeException("Phone number cannot be null or exceed 13 characters");
-                }break;
+                }break; // Break out of the loop if user input is correct
 
                 }catch (Exception e) {
                         System.out.println(e);
@@ -382,10 +388,11 @@ public class MechanicShop{
                 System.out.print("Enter Address: ");
                 try {
                         address = in.readLine();
+			//Check if user input matches the constraints of the database
                         if(address.length() <= 0 || address.length() > 256) {
 			throw new RuntimeException("Address cannot be null or exceed 256 characters");
 
-                }break;
+                }break; // Break out of the loop if user input is correct
                 }catch (Exception e) {
                         System.out.println(e);
                         continue;
@@ -393,9 +400,11 @@ public class MechanicShop{
         }while (true);
 
         try {
+		//Insert user inputs into the Customer table
                 String query = "INSERT INTO Customer (id, fname, lname, phone, address) VALUES (" + ID + ", \'" + first_name + "\', \'" + last_name + "\',  \'" + phone_num  + "\',  \'" + address + "\' );";
 
                         esql.executeUpdate(query);
+		// Display the new information added to the table
 		System.out.println("------------------------------------------------");
 				System.out.println("New Customer added.");
 				query = "SELECT * FROM Customer WHERE id='";
@@ -418,12 +427,15 @@ public class MechanicShop{
                 System.out.print("Enter Employee ID: ");
                 try {
                         ID = in.readLine();
+			// Check if ID is already in the database
                         String query = "SELECT id FROM Mechanic WHERE id=";
 			query += ID + ";";
 			int customerExists = esql.executeQuery(query); 
+			// If it exists then prompt the user to enter a new ID
 			if (customerExists != 0) throw new RuntimeException("Employee ID is in use, please enter a new ID.");
+			//Check if user input matches the constraints of the database
                         if(ID.length() <= 0) throw new RuntimeException("Employee ID cannot be null");
-                        break;
+                        break; // Break out of the looop if user input is correct
                 }catch (Exception e) {
                         System.out.println(e);
                         continue;
@@ -437,9 +449,10 @@ public class MechanicShop{
                 System.out.print("Enter First name: ");
                 try {
                         first_name = in.readLine();
+			//Check if user input matches the constraints of the database
                         if(first_name.length() <= 0 || first_name.length() > 32) {
                                 throw new RuntimeException("First name cannot be null or exceed 32 characters");
-                        }break;
+                        }break; // Break out of the loop if user input is correct
 
                 }catch (Exception e) {
                         System.out.println (e);
@@ -453,9 +466,10 @@ public class MechanicShop{
                 System.out.print("Enter Last name: ");
                 try {
                         last_name = in.readLine();
+			//Check if user input matches the constraints of the database
                         if(last_name.length() <= 0 || last_name.length() > 32) {
                         throw new RuntimeException("Last name cannot be null or exceed 32 characters");
-                }break;
+                }break; // Break out of the loop if user input is correct
 
                 }catch (Exception e) {
                         System.out.println(e);
@@ -469,8 +483,9 @@ public class MechanicShop{
                 System.out.print("Enter employee's experience(no. of years): ");
                 try {
                         exp = Integer.parseInt(in.readLine());
+			//Check if user input matches the constraints of the database
                         if(exp < 0 || exp >= 100) throw new RuntimeException("Employee's experience cannot be null or greater or equal to 100");
-                        break;
+                        break; // Break out of the loop if user input is correct
                 }catch (Exception e) {
                         System.out.println(e);
                         continue;
@@ -478,9 +493,11 @@ public class MechanicShop{
         }while (true);
 
         try {
+		// Insert user inputs into the Mechanic table
                 String query = "INSERT INTO Mechanic (id, fname, lname, experience) VALUES (" + ID + ", \'" + first_name + "\', \'" + last_name + "\',  " + exp  + " );";
 
                         esql.executeUpdate(query);
+		// Display the new information added to the table
 		System.out.println("------------------------------------------------");
 				System.out.println("New Mechanic added.");
 				query = "SELECT * FROM Mechanic WHERE id='";
@@ -501,14 +518,17 @@ public class MechanicShop{
 			
                         try{
 				in1 = in.readLine();
-                       		/*String query = "SELECT vin FROM Car WHERE vin=";
+				// Check if VIN is already in the database
+                       		String query = "SELECT vin FROM Car WHERE vin=";
 				query += in1 + ";";
 				int carExists = esql.executeQuery(query); 
-				if (carExists != 0) throw new RuntimeException("Car VIN is in use, please enter a new VIN.");   */                
+				// If it is then prompt the user to input a new VIN
+				if (carExists != 0) throw new RuntimeException("Car VIN is in use, please enter a new VIN.");  
+				//Check if user input matches the constraints of the database
                                 if(in1.length() <= 0 || in1.length() > 16) {
                                 throw new RuntimeException("VIN cannot be null or exceed 16 characters");
                                 }
-                                break;
+                                break; // Break out of the loop if user input is correct
                         } catch(Exception e) {
                                 System.out.println(e);
                                 continue;
@@ -520,12 +540,13 @@ public class MechanicShop{
                         System.out.print("\tEnter make: ");
                         try{
                                 in2 = in.readLine();
+				//Check if user input matches the constraints of the database
                                 if(in2.length() <=0 || in2.length() > 32) {
                                         throw new RuntimeException("Make cannot be null or exceed 32 characters");
                                 }
-                                break;
+                                break; // Break out of the loop if user input is correct
                         } catch(Exception e) {
-                                System.out.println("Your input is invalid!");
+                                System.out.println(e);
                                 continue;
                         }
                 } while(true);
@@ -535,12 +556,13 @@ public class MechanicShop{
                         System.out.print("\tEnter model: ");
                         try{
                                 in3 = in.readLine();
+				//Check if user input matches the constraints of the database
                                 if(in3.length() <= 0 || in3.length() > 32) {
                                         throw new RuntimeException("Model cannot be null or exceed 32 characters");
                                 }
-                                break;
+                                break; // Break out of the loop if user input is correct
                         } catch(Exception e) {
-                                System.out.println("Your input is invalid!");
+                                System.out.println(e);
                                 continue;
                         }
                 } while(true);
@@ -550,36 +572,33 @@ public class MechanicShop{
                         System.out.print("\tEnter year: ");
                         try{
                                 in4 = Integer.parseInt(in.readLine());
+				//Check if user input matches the constraints of the database
                                 if(in4 < 1970) {
                                         throw new RuntimeException("Year cannot be less than 1970");
                                 }
-                                break;
+                                break; // Break out of the loop if user input is correct
                         } catch(Exception e) {
-                                System.out.println("Your input is invalid!");
+                                System.out.println(e);
                                 continue;
                         }
                 } while(true);
 
                 try{
+			// Inser user inputs into the Car table
                         String query = "INSERT INTO Car(vin, make, model, year) VALUES(\'" + in1 + "\',\'" + in2 + "\',\'" + in3 + "\'," + in4 +")";
                         esql.executeUpdate(query);
-                } catch(Exception e) {
-                        System.err.println(e.getMessage());
-                }
-
-		try{
+               		// Display new information added to the database
 			System.out.println("------------------------------------------------");
                                 System.out.println("New Car added.");
                                String query = "SELECT * FROM Car WHERE vin='";
                                 query+= in1 + "';";
-			int rowCount = esql.executeQueryAndPrintResult(query);
-                        System.out.println("total row(s): " + rowCount);
+			esql.executeQueryAndPrintResult(query);
                                 System.out.println("------------------------------------------------");
 			
 		}	catch(Exception e) {
                         System.err.println(e.getMessage());
               		
-        }
+       		 }
 
 	}
 		
@@ -587,17 +606,21 @@ public class MechanicShop{
 	
 	public static void InsertServiceRequest(MechanicShop esql){//4
        		try{
-        		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+        		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM//dd//YYYY");
  			LocalDateTime now = LocalDateTime.now();
-   			String todaysdate = dtf.format(now);
+			// todaysdate will be the current date when the user creates a service request
+   			String todaysdate = dtf.format(now); 
 			String cust_ID="";
 			String car_ID="";
 			System.out.print("Enter the last name of the customer: ");
                         String lastName = in.readLine();
+			// Search for the last name in Customer table and display matching results
 			String query = "SELECT * FROM Customer WHERE lname='";
 			query += lastName + "';";
 			esql.executeQueryAndPrintResult(query);
 			int customerExists = esql.executeQuery(query); 
+			// If there are matching customers in the database prompt the user to select an existing customer from the
+			// results or create a new customer 
 			if (customerExists != 0){
 				String user_input; 
 				do{
@@ -606,11 +629,27 @@ public class MechanicShop{
 					switch(user_input) {
 						case "1":
 						System.out.println("Enter the customer ID: ");
-						cust_ID = in.readLine();
+						do{
+							try {
+                        				cust_ID = in.readLine();
+							// Check if ID matches the id from the results
+                      				  	String query = "SELECT * FROM Customer WHERE id=";
+							query += cust_ID + " AND lname = '" lastName "' ;";
+							int validCustomer = esql.executeQuery(query); 
+							// If ID doesn't match the results then throw an exception
+							if (validCustomer != 0) throw new RuntimeException("Customer ID doesn't match the results, please enter an ID from the results");
+                        				break; // Break out of the loop if user input is correct
+                					}catch (Exception e) {
+                        					System.out.println(e);
+                        					continue;
+							}
+						} while(true)
 						break;
 						case "2":
+						// To create a new customer call the add customer function
 						AddCustomer(esql);
-						System.out.println("Enter the customer ID: ");
+						// Prompt the user to reenter the customer ID to update the cust_ID variable in this function
+						System.out.println("Reenter the customer ID: ");
 						cust_ID = in.readLine();
 						break;
 						default :
@@ -619,12 +658,15 @@ public class MechanicShop{
 				} while (!(user_input.equals("1")) && !(user_input.equals("2")));
 			}
 			else{ 
+				// Since there are no results matching that last name prompt the user to add a new customer
 				System.out.println("There are no customers with that last name. Please add a new customer.");
 				AddCustomer(esql);
+				// Prompt the user to reenter the customer ID to update the cust_ID variable in this function
 				System.out.println("Reenter the customer ID: ");
 				cust_ID = in.readLine();
 			}	
 			
+			// Check if the customer owns any cars from the Owns table
 			query = "SELECT * FROM Owns WHERE customer_id='";
 			query += cust_ID + "';";
 				
@@ -632,32 +674,49 @@ public class MechanicShop{
 		
 			int carExists = esql.executeQuery(query); 
 			
+			// If customer owns any number of cars, then prompt the user to select a VIN from the matching results
 			if (carExists !=0){
 				System.out.println("Enter the VIN: ");
 				car_ID = in.readLine();
-				query = "SELECT COUNT(ownership_id) FROM Owns";
-				int maxOwnership = esql.executeQuery(query);
-				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", " + cust_ID + "," + car_ID + ");";
-
 			}
 			else { 
+				// If customer doesn't own any cars then prompt the user to add a new car
 				System.out.println("The customer doesn't own a car. Please add a new car.");
 				AddCar(esql);
+				// Update the car_ID with the new VIN created by the user
 				System.out.println("Reenter the VIN: ");
 				car_ID = in.readLine();
+				/*query = "SELECT COUNT(ownership_id) FROM Owns";
+				int maxOwnership = esql.executeQuery(query);
+				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", " + cust_ID + "," + car_ID + ");";
+				esql.*/
 			}	
 			
-			query = "SELECT * FROM Owns WHERE car_vin='";
+			/*query = "SELECT * FROM Owns WHERE car_vin='";
 			query += car_ID + "' AND customer_id='";
-			query += cust_ID + "';";
-			//esql.executeQueryAndPrintResult(query);
+			query += cust_ID + "';";*/
+			
 				
-			int owns = esql.executeQuery(query);
-			//System.out.println(owns);
-			//if (owns != 0){
+				// Insert user inputs into the Service_Request table
 				query = "INSERT INTO Service_Request(rid, customer_id, car_vin, date, odometer, complain) VALUES ('";
 				System.out.println("Enter the Service Request ID: ");
 				int rid = Integer.parseInt(in.readLine());
+				// Check if the rid is already in the database
+				 do{
+                       			String valid = "SELECT rid FROM Service_Request WHERE rid = " + rid + ";";
+					int exists = esql.executeQuery(query);
+                        		try{
+                               		 // If the rid is already in use then prompt the user to create a new rid
+                               		 if(exists != 0) {
+                                        	throw new RuntimeException("Service Request ID in use, create a new ID");
+                               		 }
+                                		break; // Break out of the loop if the rid created by the user is unique
+                        			} catch(Exception e) {
+                               		 System.out.println(e);
+                               		 continue;
+                       			 }
+               			 } while(true);
+					
 				query += rid + "', '";
 				query += cust_ID + "', '" + car_ID + "','" + todaysdate + "', '";
 				System.out.println("Enter the odometer reading: ");
@@ -668,7 +727,7 @@ public class MechanicShop{
 				query += complain + "');";
 						
 				esql.executeUpdate(query);
-		
+				// Display the new information added to the database
 				System.out.println("------------------------------------------------");
 				System.out.println("New service request created.");
 				query = "SELECT * FROM Service_Request WHERE rid='";
@@ -676,10 +735,7 @@ public class MechanicShop{
 				esql.executeQueryAndPrintResult(query);
 				System.out.println("------------------------------------------------");
 	
-			//}
-			//else { 
-			//	System.out.println("This customer doesn't own this car");
-			//}
+		
 		} catch(Exception e){
 				System.err.println(e.getMessage());
 		}
@@ -690,18 +746,19 @@ public class MechanicShop{
 		try{
                      
 			String wid,rid, mid, comments, query;
-			
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/YYYY");
  			LocalDateTime now = LocalDateTime.now();
+			// closing date is the current date when the user closes a service request
    			String closingdate = dtf.format(now);
-			
 			int bill;
 			do {
                 		System.out.print("Enter the service request ID: ");
                			 try {
                       		 	rid = in.readLine();
+					// Check if the rid entered by the user exists in the database
 					query = "SELECT * FROM Service_Request WHERE rid = " + rid + ";";
 					int rid_exists = esql.executeQuery(query);
+					// If the rid doesn't exist then inform the user that the rid is invalid
 					if(rid_exists == 0) {
 						throw new RuntimeException("Service Request does not exist");
 					}break;
@@ -716,8 +773,10 @@ public class MechanicShop{
                 		System.out.print("Enter the Employee's ID: ");
               		  	try {
                         		mid = in.readLine();
+					// Check if the mid entered by the user exists in the database
                        			query = "SELECT * FROM Mechanic WHERE id = " + mid + ";";
 					int mid_exists = esql.executeQuery(query);
+					// If the mid doesn't exist then inform the user that the mid is invalid
 					if(mid_exists == 0) {
 						throw new RuntimeException("Mechanic does not exist");
 					}break;
@@ -735,13 +794,14 @@ public class MechanicShop{
 			comments = in.readLine();
 			System.out.println("What's the total amount due? ");
 			bill = Integer.parseInt(in.readLine());
+			// Insert user inputs into the Closed_Request table
 			query = "INSERT INTO Closed_Request(wid, rid, mid, date, comment, bill) VALUES (" + wid + ", " + rid + "," + mid + ", '" + closingdate + "' , '" + comments +"', " + bill + ");" ;
 			esql.executeUpdate(query);
-		
+			// Display the new information added to the database
 			System.out.println("------------------------------------------------");
 			System.out.println("Service request closed.");
-			query = "SELECT * FROM Closed_Request WHERE rid='";
-			query+= rid + "';";
+			query = "SELECT * FROM Closed_Request WHERE wid='";
+			query+= wid + "';";
 			esql.executeQueryAndPrintResult(query);
 			System.out.println("------------------------------------------------");
 
@@ -755,9 +815,12 @@ public class MechanicShop{
 	
 	public static void ListCustomersWithBillLessThan100(MechanicShop esql){//6
 		try{
-			String query = "SELECT c.fname AS FirstName, c.lname AS LastName, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
+			// Display customers who have bills less than $100
+			String query = "SELECT c.fname AS FirstName, c.lname AS LastName, c.id AS CustomerID, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
+			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
+			System.out.println("------------------------------------------------");
 		}
 	 	catch(Exception e){
 			System.err.println(e.getMessage());
@@ -766,12 +829,13 @@ public class MechanicShop{
 	
 	public static void ListCustomersWithMoreThan20Cars(MechanicShop esql){//7
 		try{
-                        String query = "SELECT fname, lname FROM Customer WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20)";
-
+			// Display customers who own more than 20 cars
+                        String query = "SELECT fname AS FirstName, lname AS LastName FROM Customer WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20)";
+			System.out.println("------------------------------------------------");
                         int rowCount = esql.executeQuery(query);
-                        System.out.println("total row(s): " + rowCount);
-
                         esql.executeQueryAndPrintResult(query);
+			System.out.println("total row(s): " + rowCount);
+			System.out.println("------------------------------------------------");
                 } catch(Exception e) {
                         System.err.println(e.getMessage());
                 }
@@ -780,9 +844,12 @@ public class MechanicShop{
 	
 	public static void ListCarsBefore1995With50000Milles(MechanicShop esql){//8
 		try{
-			String query = "SELECT DISTINCT make, model, year FROM Car a, Service_Request b WHERE year < 1995 and b.car_vin = a.vin and b.odometer < 50000;";
+			// Display cars before 1995 that have 50000 miles odometer reading
+			String query = "SELECT DISTINCT vin, make AS Make, model AS Model, year AS Year FROM Car a, Service_Request b WHERE year < 1995 and b.car_vin = a.vin and b.odometer < 50000;";
+			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
+			System.out.println("------------------------------------------------");
 		}
 	 	catch(Exception e){
 			System.err.println(e.getMessage());
@@ -796,21 +863,24 @@ public class MechanicShop{
 			System.out.println("Enter the number of cars you want to view: ");
 			String num = in.readLine();
 			query += num + ";";
-
+			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
+			System.out.println("------------------------------------------------");
 		}
 	 	catch(Exception e){
 			System.err.println(e.getMessage());
 		}	
 	}
 	
-	public static void ListCustomersInDescendingOrderOfTheirTotalBill(MechanicShop esql){//9
+	public static void ListCustomersInDescendingOrderOfTheirTotalBill(MechanicShop esql){//10
 		//
 		try{
 			String query = "SELECT a.fname, a.lname, TotalBill FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS TotalBill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.TotalBill DESC;";
+			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
+			System.out.println("------------------------------------------------");
 		}
 	 	catch(Exception e){
 			System.err.println(e.getMessage());
