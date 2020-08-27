@@ -519,12 +519,6 @@ public class MechanicShop{
 			
                         try{
 				in1 = in.readLine();
-				/*// Check if VIN is already in the database
-                       		String query = "SELECT vin FROM Car WHERE vin=";
-				query += in1 + ";";
-				int carExists = esql.executeQuery(query); 
-				// If it is then prompt the user to input a new VIN
-				if (carExists != 0) throw new RuntimeException("Car VIN is in use, please enter a new VIN.");  */
 				//Check if user input matches the constraints of the database
                                 if(in1.length() <= 0 || in1.length() > 16) {
                                 throw new RuntimeException("VIN cannot be null or exceed 16 characters");
@@ -674,15 +668,10 @@ public class MechanicShop{
 				// Update the car_ID with the new VIN created by the user
 				System.out.println("Reenter the VIN: ");
 				car_ID = in.readLine();
-				/*query = "SELECT COUNT(ownership_id) FROM Owns";
-				int maxOwnership = esql.executeQuery(query);
-				query = "INSERT INTO Owns(ownership_id, customer_id, car_vin) VALUES ( " + maxOwnership  + ", " + cust_ID + "," + car_ID + ");";
-				esql.*/
+			
 			}	
 			
-			/*query = "SELECT * FROM Owns WHERE car_vin='";
-			query += car_ID + "' AND customer_id='";
-			query += cust_ID + "';";*/
+			
 			
 				
 				// Insert user inputs into the Service_Request table
