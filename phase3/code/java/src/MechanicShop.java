@@ -1,4 +1,5 @@
 /*
+
  * Template JAVA User Interface
  * =============================
  *
@@ -23,9 +24,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;  
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -606,12 +606,12 @@ public class MechanicShop{
 	
 	public static void InsertServiceRequest(MechanicShop esql){//4
        		try{
-        		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM//dd//YYYY");
- 			LocalDateTime now = LocalDateTime.now();
+        		
 			// todaysdate will be the current date when the user creates a service request
-   			String todaysdate = dtf.format(now); 
-			String cust_ID="";
-			String car_ID="";
+   			Date date = new Date();
+			SimpleDateFormat DateFor = new SimpleDateFormat("MM/dd/yyyy");
+			String todaysdate = DateFor.format(date);
+			String cust_ID = "", car_ID = "";
 			System.out.print("Enter the last name of the customer: ");
                         String lastName = in.readLine();
 			// Search for the last name in Customer table and display matching results
@@ -718,10 +718,11 @@ public class MechanicShop{
 		try{
                      
 			String wid,rid, mid, comments, query;
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM//dd//YYYY");
- 			LocalDateTime now = LocalDateTime.now();
+	
 			// closing date is the current date when the user closes a service request
-   			String closingdate = dtf.format(now);
+   			Date date = new Date();
+                        SimpleDateFormat DateFor = new SimpleDateFormat("MM/dd/yyyy");
+                        String closingdate = DateFor.format(date);
 			int bill;
 			do {
                 		System.out.print("Enter the service request ID: ");
@@ -788,7 +789,7 @@ public class MechanicShop{
 	public static void ListCustomersWithBillLessThan100(MechanicShop esql){//6
 		try{
 			// Display customers who have bills less than $100
-			String query = "SELECT c.fname AS First_Name, c.lname AS Last_Name, c.id AS Customer_ID, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
+			String query = "EXPLAIN SELECT c.fname AS First_Name, c.lname AS Last_Name, c.id AS Customer_ID, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
 			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
@@ -802,7 +803,7 @@ public class MechanicShop{
 	public static void ListCustomersWithMoreThan20Cars(MechanicShop esql){//7
 		try{
 			// Display customers who own more than 20 cars
-                        String query = "SELECT fname AS First_Name, lname AS Last_Name, COUNT(a.ownership_id) FROM Customer, Owns a WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20) AND id = a.customer_id";
+                        String query = "EXPLAIN SELECT fname AS First_Name, lname AS Last_Name, COUNT(a.ownership_id) FROM Customer, Owns a WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20) AND id = a.customer_id";
 			System.out.println("------------------------------------------------");
                         int rowCount = esql.executeQuery(query);
                         esql.executeQueryAndPrintResult(query);
@@ -831,6 +832,7 @@ public class MechanicShop{
 	public static void ListKCarsWithTheMostServices(MechanicShop esql){//9
 		//
 		try{
+			// Display the first K cars with the most service requests. K is an integer that the user inputs.
 			String query = "SELECT make, model, a.number_of_requests FROM Car c, (SELECT car_vin, COUNT(rid) AS number_of_requests FROM Service_Request GROUP BY car_vin ) AS a WHERE a.car_vin = c.vin ORDER BY a.number_of_requests DESC LIMIT "	;
 			System.out.println("Enter the number of cars you want to view: ");
 			String num = in.readLine();
@@ -848,7 +850,8 @@ public class MechanicShop{
 	public static void ListCustomersInDescendingOrderOfTheirTotalBill(MechanicShop esql){//10
 		//
 		try{
-			String query = "SELECT a.fname AS first_name, a.lname AS last_name, Total_Bill FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS Total_Bill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.Total_Bill DESC;";
+			// Display customers in descending order of their total bill
+			String query = "EXPLAIN SELECT a.fname AS first_name, a.lname AS last_name, Total_Bill FROM Customer a,(SELECT sr.customer_id, SUM(cr.bill) AS Total_Bill FROM Closed_Request cr, Service_Request sr WHERE cr.rid = sr.rid GROUP BY sr.customer_id) AS b WHERE a.id=b.customer_id ORDER BY b.Total_Bill DESC;";
 			System.out.println("------------------------------------------------");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
