@@ -596,7 +596,7 @@ public class MechanicShop{
                         String lastName = in.readLine();
 			String query = "SELECT * FROM Customer WHERE lname='";
 			query += lastName + "';";
-
+			eesql.executeQueryAndPrintResult(query);
 			int customerExists = esql.executeQuery(query); 
 			if (customerExists != 0){
 				String user_input; 
