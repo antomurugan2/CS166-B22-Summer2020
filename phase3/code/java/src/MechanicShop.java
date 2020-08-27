@@ -590,7 +590,7 @@ public class MechanicShop{
                		// Display new information added to the database
 			System.out.println("------------------------------------------------");
                                 System.out.println("New Car added.");
-                               String query = "SELECT * FROM Car WHERE vin='";
+                            query = "SELECT * FROM Car WHERE vin='";
                                 query+= in1 + "';";
 			esql.executeQueryAndPrintResult(query);
                                 System.out.println("------------------------------------------------");
@@ -633,7 +633,7 @@ public class MechanicShop{
 							try {
                         				cust_ID = in.readLine();
 							// Check if ID matches the id from the results
-                      				  	String query = "SELECT * FROM Customer WHERE id= ";
+                      				  	query = "SELECT * FROM Customer WHERE id= ";
 							query += cust_ID + " ;";
 							int validCustomer = esql.executeQuery(query); 
 							// If ID doesn't match the results then throw an exception
