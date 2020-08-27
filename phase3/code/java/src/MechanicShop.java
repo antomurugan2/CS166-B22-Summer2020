@@ -500,7 +500,7 @@ public class MechanicShop{
 		// Display the new information added to the table
 		System.out.println("------------------------------------------------");
 				System.out.println("New Mechanic added.");
-				query = "SELECT * FROM Mechanic WHERE id='";
+				query = "SELECT id AS employee_id, fname AS First_Name, lname AS Last_Name, experience FROM Mechanic WHERE id='";
 				query+= ID + "';";
 				esql.executeQueryAndPrintResult(query);
 				System.out.println("------------------------------------------------");
@@ -746,7 +746,7 @@ public class MechanicShop{
 		try{
                      
 			String wid,rid, mid, comments, query;
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM//dd//YYYY");
  			LocalDateTime now = LocalDateTime.now();
 			// closing date is the current date when the user closes a service request
    			String closingdate = dtf.format(now);
@@ -800,7 +800,7 @@ public class MechanicShop{
 			// Display the new information added to the database
 			System.out.println("------------------------------------------------");
 			System.out.println("Service request closed.");
-			query = "SELECT * FROM Closed_Request WHERE wid='";
+			query = "SELECT wid AS close_request_id, rid AS service_request_id, mid as employee_id, date AS closing_date, comment as comments, bill FROM Closed_Request WHERE wid='";
 			query+= wid + "';";
 			esql.executeQueryAndPrintResult(query);
 			System.out.println("------------------------------------------------");
