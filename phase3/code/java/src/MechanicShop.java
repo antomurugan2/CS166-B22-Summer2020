@@ -792,6 +792,7 @@ public class MechanicShop{
 			// Display customers who have bills less than $100
 			String query = "EXPLAIN SELECT c.fname AS First_Name, c.lname AS Last_Name, c.id AS Customer_ID, b.bill FROM Customer c, Service_Request a, Closed_Request b WHERE c.id = a.customer_id AND a.rid = b.rid AND b.bill < 100;";
 			System.out.println("------------------------------------------------");
+			esql.executeQueryAndPrintResult(query);
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println("total row(s): " + rowCount);
 			System.out.println("------------------------------------------------");
