@@ -633,8 +633,8 @@ public class MechanicShop{
 							try {
                         				cust_ID = in.readLine();
 							// Check if ID matches the id from the results
-                      				  	String query = "SELECT * FROM Customer WHERE id=";
-							query += cust_ID + " AND lname = '" lastName "' ;";
+                      				  	String query = "SELECT * FROM Customer WHERE id= ";
+							query += cust_ID + " ;";
 							int validCustomer = esql.executeQuery(query); 
 							// If ID doesn't match the results then throw an exception
 							if (validCustomer != 0) throw new RuntimeException("Customer ID doesn't match the results, please enter an ID from the results");
