@@ -807,10 +807,10 @@ public class MechanicShop{
 	public static void ListCustomersWithMoreThan20Cars(MechanicShop esql){//7
 		try{
 			// Print the plain for this query execution
-                        String query = "EXPLAIN SELECT fname AS First_Name, lname AS Last_Name, COUNT(a.ownership_id) FROM Customer, Owns a WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20) AND id = a.customer_id";
+                        String query = "EXPLAIN SELECT fname, lname FROM Customer WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20)";
 			esql.executeQueryAndPrintResult(query);
 			// Display customers who own more than 20 cars
-			query = "SELECT fname AS First_Name, lname AS Last_Name, COUNT(a.ownership_id) FROM Customer, Owns a WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20) AND id = a.customer_id";
+			query = "SELECT fname, lname FROM Customer WHERE id IN (SELECT customer_id FROM Owns GROUP BY customer_id HAVING COUNT(customer_id) > 20)";
 			System.out.println("------------------------------------------------");
                         int rowCount = esql.executeQuery(query);
                         esql.executeQueryAndPrintResult(query);
