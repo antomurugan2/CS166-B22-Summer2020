@@ -407,8 +407,8 @@ public class MechanicShop{
 		// Display the new information added to the table
 		System.out.println("------------------------------------------------");
 				System.out.println("New Customer added.");
-				query = "\\x";
-				esql.executeUpdate(query);
+				query = "\x"
+				esql.executeUpdate(query);	
 				query = "SELECT id AS Customer_ID, fname AS First_Name, lname AS Last_Name, phone AS Phone_Number, address FROM Customer WHERE id='";
 				query+= ID + "';";
 				esql.executeQueryAndPrintResult(query);
